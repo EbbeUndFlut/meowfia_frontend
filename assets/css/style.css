@@ -1,0 +1,71 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: 16px;
+    font-family: monospace;
+}
+
+nav {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 2rem;
+}
+
+.error {
+    height: 15vh;
+    display: none;
+    padding-top: 7vh;
+    font-size: larger;
+    text-align: center;
+    text-transform: uppercase;
+    background: red;
+}
+
+.show {
+    display: block;
+}
+
+nav>ul {
+    list-style: none;
+    display: flex;
+    gap: 10px;
+}
+
+.members {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-around;
+}
+
+.cardcontainer {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 33%;
+    border: 1px solid rgb(151, 151, 151);
+}
+
+.cardimage {
+    width: 50%;
+}
+
+.classinfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+}
+
+.memberrank {
+    background: lightpink;
+    color: white;
+    padding: 3px;
+
+}
+
+.speciality {}
+
+.preview {
+    width: 200px;
+}

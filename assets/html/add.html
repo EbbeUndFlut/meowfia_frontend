@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Meowfamily</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script type="module" src="../js/add.js" defer></script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <p>Meowfia</p>
+            <ul>
+                <li><a href="../../index.html">Members</a></li>
+                <li><a href="./assets/html/add.html">New Member</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="error">Du bist doch ein Hund!</div>
+        <form action="#">
+            <h2>Mitgliedsdaten</h2>
+            <div>
+                <label for="cat-name">Name </label>
+                <input type="text" id="cat-name" name="catname" placeholder="z.B. Big Meowski" required />
+            </div>
+            <div>
+                <label for="cat-rank">Rang </label>
+                <select name="catrank" id="cat-rank" required>
+                    <option value="">--</option>
+                    <option value="underboss">Underboss</option>
+                    <option value="don">Don</option>
+                    <option value="soldier">Soldier</option>
+                    <option value="enforcer">Enforcer</option>
+                    <option value="made-cat">Made Cat</option>
+                    <option value="catsociate">Catsociate</option>
+                </select>
+            </div>
+            <div>
+                <label for="cat-specialty">Spezialgebiet </label>
+                <input type="text" id="catspecialty" name="catspecialty"
+                    placeholder="z.B. Finanzen, Spionage, Logistik..." />
+                <span>Optional - kann später eingegeben werden</span>
+            </div>
+            <button type="submit" id="add-member-button">Mitglied anlegen</button>
+        </form>
+        <img class="preview" src="" alt="">
+    </main>
+
+</body>
+
+</html>
