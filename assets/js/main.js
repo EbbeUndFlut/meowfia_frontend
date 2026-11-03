@@ -1,30 +1,149 @@
-const memberSection = document.querySelector('.members')
+const API_URL = 'http://localhost:6767/api/v1/clan';
 
-const resp = await fetch('http://localhost:6767/api/v1/cat')
-const data = await resp.json()
+const clanSection = document.querySelector('.clans');
+const errorBox = document.querySelector('.clanerror');
+const numberFormat = new Intl.NumberFormat('de-DE');
 
-for (const member of data) {
-    memberSection.append(createMemberCard(member))
+function element(tag, className, text) {
+    const node = document.createElement(tag);
+
+    if (className) node.className = className;
+    if (text !== undefined && text !== null) {
+        node.textContent = text;
+    }
+
+    return node;
 }
 
+function createClanCard(clan) {
+    const card = element('article', 'clancard');
 
-function createMemberCard(member) {
-    const cardContainer = document.createElement('div')
-    cardContainer.classList.add('cardcontainer')
-    const cardImage = document.createElement('img')
-    cardImage.classList.add('cardimage')
-    cardImage.src = member.avatar_url
-    const cardInfo = document.createElement('div')
-    cardInfo.classList.add('classinfo')
-    const memberName = document.createElement('p')
-    memberName.textContent = member.cat_name
-    const memberRank = document.createElement('div')
-    memberRank.classList.add('memberrank')
-    memberRank.textContent = member.cat_rank
-    const speciality = document.createElement('div')
-    speciality.classList.add('speciality')
-    speciality.textContent = member.speciality
-    cardInfo.append(memberName, memberRank, speciality)
-    cardContainer.append(cardImage, cardInfo)
-    return cardContainer
+    const top = element('div', 'clantop');
+    top.append(
+        element('span', 'clanid', `FAMILIE #${String(clan.id).padStart(2, '0')}`),
+        element('span', 'clanbadge', 'Aktiver Clan')
+    );
+
+    const name = element(
+        'h2',
+        'clanname',
+        clan.clan_name || 'Unbenannter Clan'
+    );
+
+    // Don mit Avatar und Namen
+    const don = element('div', 'clandon');
+
+    const avatar = element('img', 'clanavatar');
+    avatar.src = clan.donAvatar || '';
+    avatar.alt = `Avatar von ${clan.donName || 'unbekannt'}`;
+    avatar.loading = 'lazy';
+    avatar.referrerPolicy = 'no-referrer';
+
+    avatar.addEventListener('error', () => {
+        avatar.classList.add('avatarfallback');
+        avatar.removeAttribute('src');
+        avatar.alt = 'Kein Don-Bild verfügbar';
+    }, { once: true });
+
+    const donInfo = element('div', 'clandoninfo');
+    donInfo.append(
+        element('small', '', 'DON DER FAMILIE'),
+        element('strong', 'donname', clan.donName || 'Unbekannt')
+    );
+
+    don.append(avatar, donInfo);
+
+    // Clan-Statistiken
+    const stats = element('div', 'clanstats');
+
+    stats.append(
+        createStat('Mitglieder', clan.mitglieder, '♟'),
+        createStat('Regionen', clan.regionen, '⌖'),
+        createStat(
+            'Fische',
+            numberFormat.format(Number(clan.fische) || 0),
+            '🐟',
+            true
+        )
+    );
+
+    // Wählen-Button (aktuell ohne Funktion)
+    const selectButton = element('button', 'clanselect', 'Wählen');
+    selectButton.type = 'button';
+
+    card.append(top, name, don, stats, selectButton);
+
+    return card;
 }
+
+function createStat(label, value, icon, highlight = false) {
+    const stat = element(
+        'div',
+        `clanstat${highlight ? ' fishstat' : ''}`
+    );
+
+    const text = element('div', 'clanstattext');
+
+    stat.append(
+        element('span', 'clanstaticon', icon),
+        text
+    );
+
+    text.append(
+        element('strong', '', value ?? 0),
+        element('small', '', label)
+    );
+
+    return stat;
+}
+
+async function loadClans() {
+    clanSection.replaceChildren(
+        element('p', 'clanstatus', 'Lade Clans …')
+    );
+
+    errorBox.classList.remove('show');
+
+    try {
+        const response = await fetch(API_URL);
+
+        if (!response.ok) {
+            throw new Error(
+                `Server antwortet mit Status ${response.status}`
+            );
+        }
+
+        const clans = await response.json();
+
+        if (!Array.isArray(clans)) {
+            throw new Error(
+                'Die API hat keine gültige Clan-Liste zurückgegeben.'
+            );
+        }
+
+        if (clans.length === 0) {
+            clanSection.replaceChildren(
+                element(
+                    'p',
+                    'clanstatus',
+                    'Noch keine Clans vorhanden. Gründe den ersten Clan!'
+                )
+            );
+            return;
+        }
+
+        clanSection.replaceChildren(...clans.map(createClanCard));
+
+    } catch (error) {
+        console.error('Clans konnten nicht geladen werden:', error);
+
+        clanSection.replaceChildren();
+
+        errorBox.textContent =
+            `Clans konnten nicht geladen werden. ${error.message}`;
+
+        errorBox.classList.add('show');
+    }
+}
+
+loadClans();

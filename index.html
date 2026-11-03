@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meowfia - Gib uns deinen Fisch</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <title>Meowfia - Die Clans</title>
+    <link rel="stylesheet" href="assets/css/style-clans.css">
     <script type="module" src="assets/js/main.js" defer></script>
 </head>
 
@@ -14,14 +14,23 @@
         <nav>
             <p>Meowfia</p>
             <ul>
-                <li>Members</li>
+                <li class="active"><a href="./index.html">Clans</a></li>
                 <li><a href="./assets/html/region.html">Regions</a></li>
-                <li><a href="./assets/html/add.html">New Member</a></li>
+                <li><a href="./assets/html/createClan.html">New Clan</a></li>
             </ul>
         </nav>
     </header>
-    <main>
-        <section class="members"></section>
+
+    <main class="clanlistpage">
+        <section class="pagehead">
+            <h1>Die <span>Familien</span></h1>
+            <p>Die mächtigsten Katzenfamilien der Meowfia – und ihre Besitztümer.</p>
+        </section>
+
+        <div class="error clanerror" role="alert" aria-live="polite"></div>
+        <section class="clans" aria-label="Alle Clans">
+            <p class="clanstatus">Lade Clans …</p>
+        </section>
     </main>
 </body>
 

@@ -1,0 +1,889 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: 16px;
+    font-family: monospace;
+}
+
+nav {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 2rem;
+}
+
+.error {
+    height: 15vh;
+    display: none;
+    padding-top: 7vh;
+    font-size: larger;
+    text-align: center;
+    text-transform: uppercase;
+    background: red;
+}
+
+.show {
+    display: block;
+}
+
+nav>ul {
+    list-style: none;
+    display: flex;
+    gap: 10px;
+}
+
+/* ==========================================================
+   Meowfia theme (dark)
+   Shared by all pages: variables, background, navigation and
+   page layout. The region and member components follow below.
+   ========================================================== */
+
+body {
+    --bg: #0d0f14;
+    --bg2: #141824;
+    --card: #181d2b;
+    --card-hi: #1f2536;
+    --line: #2a3147;
+    --text: #eef0f6;
+    --muted: #8a93ad;
+    --gold: #e9b44c;
+    --gold-soft: rgba(233, 180, 76, .14);
+    --free: #5fd3a0;
+
+    min-height: 100vh;
+    color: var(--text);
+    background:
+        radial-gradient(900px 500px at 85% -10%, rgba(233, 180, 76, .10), transparent 60%),
+        radial-gradient(700px 500px at -5% 20%, rgba(120, 90, 220, .10), transparent 60%),
+        var(--bg);
+}
+
+.regionpage svg {
+    display: block;
+}
+
+/* ---- navigation ---- */
+header {
+    border-bottom: 1px solid var(--line);
+    background: rgba(13, 15, 20, .8);
+}
+
+nav {
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 18px 32px;
+}
+
+nav>p {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: .5px;
+    color: var(--gold);
+}
+
+nav>ul {
+    gap: 6px;
+}
+
+nav li {
+    padding: 9px 16px;
+    border-radius: 10px;
+    color: var(--muted);
+}
+
+nav li:hover {
+    color: var(--text);
+}
+
+nav li.active {
+    background: var(--gold-soft);
+    color: var(--gold);
+}
+
+nav a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* ---- page layout ---- */
+main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 32px 56px;
+}
+
+.regionpage .error {
+    height: auto;
+    margin-bottom: 24px;
+    padding: 16px 20px;
+    border: 1px solid #e5604d;
+    border-radius: 12px;
+    background: rgba(229, 96, 77, .15);
+    color: #ffb4a8;
+    text-align: left;
+    text-transform: none;
+    font-size: 1rem;
+}
+
+.regionhead,
+.pagehead {
+    margin-bottom: 28px;
+}
+
+.regionhead h1,
+.pagehead h1 {
+    font-size: 2.6rem;
+    letter-spacing: -.5px;
+}
+
+.regionhead h1 span,
+.pagehead h1 span {
+    font-size: inherit;
+    color: var(--gold);
+}
+
+.regionhead p,
+.pagehead p {
+    margin-top: 8px;
+    color: var(--muted);
+}
+
+/* ---- stats ---- */
+.regionstats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.regionstat {
+    padding: 20px 22px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: linear-gradient(160deg, var(--card-hi), var(--card));
+}
+
+.regionstat small {
+    display: block;
+    font-size: .75rem;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.regionstat strong {
+    display: block;
+    margin-top: 8px;
+    font-size: 2rem;
+}
+
+.regionstat.green strong {
+    color: var(--free);
+}
+
+.regionstat.gold strong {
+    color: var(--gold);
+}
+
+/* ---- filters ---- */
+.regionfilters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.regionfilter {
+    padding: 10px 20px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--bg2);
+    color: var(--muted);
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.regionfilter:hover {
+    color: var(--text);
+}
+
+.regionfilter.active {
+    border-color: var(--gold);
+    background: var(--gold);
+    color: #17130a;
+    font-weight: 700;
+}
+
+.regionfilter .count {
+    margin-left: 6px;
+    opacity: .7;
+}
+
+/* ---- region grid ---- */
+.regions {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 22px;
+}
+
+.regionstatus {
+    grid-column: 1 / -1;
+    padding: 40px 0;
+    text-align: center;
+    color: var(--muted);
+}
+
+/* ---- region card ---- */
+.regioncard {
+    --c: var(--line);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 22px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: linear-gradient(170deg, var(--card-hi), var(--card));
+    transition: transform .15s ease, border-color .15s ease;
+}
+
+.regioncard::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 4px;
+    background: var(--c);
+}
+
+.regioncard:hover {
+    transform: translateY(-3px);
+    border-color: var(--c);
+}
+
+.regioncard.free {
+    --c: var(--free);
+    border-style: dashed;
+    background: linear-gradient(170deg, #151a28, #11151f);
+}
+
+.regioncard.free::before {
+    opacity: .6;
+}
+
+.regiontop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.regionid {
+    padding: 5px 10px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--bg);
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: var(--muted);
+}
+
+.regionbadge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 11px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .06);
+    font-size: .75rem;
+    font-weight: 700;
+}
+
+.regionbadge::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--c);
+}
+
+.regioncard.free .regionbadge {
+    background: rgba(95, 211, 160, .14);
+    color: var(--free);
+}
+
+.regionname {
+    min-height: 2.4em;
+    font-size: 1.4rem;
+    line-height: 1.2;
+}
+
+.regionrate {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--bg);
+}
+
+.regionrateicon {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--gold-soft);
+    color: var(--gold);
+}
+
+.regionratevalue {
+    font-size: 1.7rem;
+    line-height: 1;
+    color: var(--gold);
+}
+
+.regionrate small {
+    display: block;
+    margin-top: 4px;
+    font-size: .75rem;
+    color: var(--muted);
+}
+
+.regionowner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+}
+
+.regionavatar {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--c);
+    color: #0d0f14;
+    font-weight: 700;
+}
+
+.regionowner small {
+    display: block;
+    font-size: .75rem;
+    color: var(--muted);
+}
+
+.regionownername {
+    font-weight: 600;
+}
+
+.regioncard.free .regionavatar {
+    border: 1.5px dashed var(--muted);
+    background: transparent;
+    color: var(--muted);
+}
+
+.regioncard.free .regionownername {
+    color: var(--muted);
+}
+
+/* ---- small screens ---- */
+@media (max-width: 1000px) {
+    .regionstats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    nav {
+        flex-wrap: wrap;
+        gap: 8px 12px;
+        padding: 14px 16px;
+    }
+
+    nav li {
+        padding: 8px 12px;
+    }
+
+    main {
+        padding: 28px 16px 40px;
+    }
+
+    .regionstats {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* ==========================================================
+   Members page (index.html)
+   Restyles the cards that main.js builds: .cardcontainer with
+   .cardimage and .classinfo (name, .memberrank, .speciality)
+   ========================================================== */
+
+.members {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(340px, 100%), 1fr));
+    gap: 22px;
+    justify-content: normal;
+}
+
+.cardcontainer {
+    position: relative;
+    width: auto;
+    min-height: 170px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: linear-gradient(170deg, var(--card-hi), var(--card));
+    transition: transform .15s ease, border-color .15s ease;
+}
+
+.cardcontainer::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    z-index: 2;
+    height: 4px;
+    background: var(--gold);
+}
+
+.cardcontainer:hover {
+    transform: translateY(-3px);
+    border-color: var(--gold);
+}
+
+/* slow zoom into the cat picture while the card is hovered */
+.cardcontainer:hover .cardimage {
+    transform: scale(1.12);
+}
+
+.cardimage {
+    width: 42%;
+    flex: none;
+    align-self: stretch;
+    object-fit: cover;
+    background: var(--bg);
+    transition: transform .8s cubic-bezier(.2, .6, .2, 1);
+}
+
+.classinfo {
+    /* opaque + above the image, so the zoomed picture never bleeds into the text area */
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    min-width: 0;
+    padding: 22px 20px;
+    gap: 10px;
+    background: linear-gradient(170deg, var(--card-hi), var(--card));
+}
+
+.classinfo p {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.memberrank {
+    align-self: flex-start;
+    padding: 4px 11px;
+    border: 1px solid rgba(233, 180, 76, .35);
+    border-radius: 999px;
+    background: var(--gold-soft);
+    color: var(--gold);
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.speciality {
+    font-size: .9rem;
+    line-height: 1.4;
+    color: var(--muted);
+}
+
+.speciality::before {
+    content: "Speciality";
+    display: block;
+    margin-bottom: 2px;
+    font-size: .7rem;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    opacity: .7;
+}
+
+.speciality:empty {
+    display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .cardcontainer,
+    .cardimage {
+        transition: none;
+    }
+
+    .cardcontainer:hover,
+    .cardcontainer:hover .cardimage {
+        transform: none;
+    }
+}
+
+/* ==========================================================
+   Clan list (index.html)
+   ========================================================== */
+
+.clanlistpage .clanerror {
+    height: auto;
+    margin-bottom: 24px;
+    padding: 16px 20px;
+    border: 1px solid #e5604d;
+    border-radius: 12px;
+    background: rgba(229, 96, 77, .15);
+    color: #ffb4a8;
+    text-align: left;
+    text-transform: none;
+    font-size: 1rem;
+}
+
+.clans {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(360px, 100%), 1fr));
+    gap: 22px;
+}
+
+.clanstatus {
+    grid-column: 1 / -1;
+    padding: 48px 12px;
+    color: var(--muted);
+    text-align: center;
+}
+
+.clancard {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 0;
+    padding: 24px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: linear-gradient(170deg, var(--card-hi), var(--card));
+    transition: transform .15s ease, border-color .15s ease;
+}
+
+.clancard::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 4px;
+    background: var(--gold);
+}
+
+.clancard:hover {
+    transform: translateY(-3px);
+    border-color: var(--gold);
+}
+
+.clantop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.clanid {
+    padding: 5px 10px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--muted);
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.clanbadge {
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: var(--gold-soft);
+    color: var(--gold);
+    font-size: .7rem;
+    font-weight: 700;
+}
+
+.clanname {
+    min-height: 2.4em;
+    font-size: 1.45rem;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.clandon {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--bg);
+}
+
+.clanavatar {
+    display: block;
+    flex: none;
+    width: 66px;
+    height: 66px;
+    border: 2px solid rgba(233, 180, 76, .45);
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--card-hi);
+}
+
+.clanavatar.avatarfallback {
+    background:
+        radial-gradient(circle at 50% 40%, rgba(233, 180, 76, .2), transparent 65%),
+        var(--card-hi);
+}
+
+.clandoninfo {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+}
+
+.clandoninfo small {
+    color: var(--muted);
+    font-size: .68rem;
+    letter-spacing: 1.1px;
+}
+
+.donname {
+    font-size: 1.05rem;
+    overflow-wrap: anywhere;
+}
+
+.clanstats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: auto;
+}
+
+.clanstat {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-width: 0;
+    padding: 12px 10px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: rgba(13, 15, 20, .55);
+}
+
+.clanstaticon {
+    color: var(--muted);
+    font-size: 1.15rem;
+}
+
+.clanstattext {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    gap: 3px;
+}
+
+.clanstattext strong {
+    font-size: 1.15rem;
+    line-height: 1.1;
+    overflow-wrap: anywhere;
+}
+
+.clanstattext small {
+    color: var(--muted);
+    font-size: .65rem;
+}
+
+.fishstat .clanstaticon,
+.fishstat .clanstattext strong {
+    color: var(--gold);
+}
+
+@media (max-width: 600px) {
+    .clancard {
+        padding: 20px;
+    }
+
+    .clanstats {
+        gap: 7px;
+    }
+
+    .clanstat {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        padding: 10px 8px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .clancard {
+        transition: none;
+    }
+
+    .clancard:hover {
+        transform: none;
+    }
+}
+
+/* ==========================================================
+   Clan-Karten: Avatar, Don und Wählen-Button
+   ========================================================== */
+
+.clandon {
+    gap: 18px;
+    padding: 18px;
+    background: linear-gradient(135deg,
+            rgba(233, 180, 76, .08),
+            var(--bg));
+}
+
+.clanavatar {
+    width: 86px;
+    height: 86px;
+    flex: 0 0 86px;
+    object-fit: cover;
+    object-position: center;
+    border: 3px solid var(--gold);
+    border-radius: 50%;
+    background: var(--card-hi);
+    box-shadow:
+        0 0 0 4px rgba(233, 180, 76, .10),
+        0 5px 18px rgba(0, 0, 0, .35);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.clancard:hover .clanavatar {
+    transform: scale(1.05);
+    box-shadow:
+        0 0 0 5px rgba(233, 180, 76, .16),
+        0 7px 22px rgba(0, 0, 0, .4);
+}
+
+.clandoninfo {
+    gap: 7px;
+}
+
+.clandoninfo small {
+    color: var(--gold);
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.donname {
+    display: block;
+    color: var(--text);
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+}
+
+/* Wählen-Button */
+
+.clanselect {
+    width: 100%;
+    margin-top: 2px;
+    padding: 13px 20px;
+
+    border: 1px solid var(--gold);
+    border-radius: 12px;
+
+    background: linear-gradient(135deg,
+            #e9b44c,
+            #c9902d);
+
+    color: #17130a;
+    font-family: monospace;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    box-shadow: 0 4px 14px rgba(233, 180, 76, .15);
+
+    transition:
+        transform .15s ease,
+        box-shadow .15s ease,
+        filter .15s ease;
+}
+
+.clanselect:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.12);
+    box-shadow: 0 7px 20px rgba(233, 180, 76, .3);
+}
+
+.clanselect:active {
+    transform: translateY(0) scale(.98);
+}
+
+.clanselect:focus-visible {
+    outline: 2px solid var(--text);
+    outline-offset: 4px;
+}
+
+/* Tatzen-Cursor für Buttons */
+
+/* Schöner Tatzen-Cursor für Buttons */
+
+button,
+.clanselect {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Cdefs%3E%3ClinearGradient id='p' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23ffe49a'/%3E%3Cstop offset='100%25' stop-color='%23e9a52f'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg fill='url(%23p)' stroke='%237c4b16' stroke-width='1.4' stroke-linejoin='round'%3E%3Cellipse cx='8' cy='11' rx='3.5' ry='4.5' transform='rotate(-25 8 11)'/%3E%3Cellipse cx='16' cy='7' rx='3.5' ry='4.5' transform='rotate(-8 16 7)'/%3E%3Cellipse cx='24' cy='9' rx='3.5' ry='4.5' transform='rotate(15 24 9)'/%3E%3Cellipse cx='30' cy='16' rx='3' ry='4' transform='rotate(35 30 16)'/%3E%3Cpath d='M18 14 C12 14 7 19 7 25 C7 30 12 31 18 29 C24 31 29 30 29 25 C29 19 24 14 18 14Z'/%3E%3C/g%3E%3C/svg%3E") 18 18, pointer;
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+    .clandon {
+        padding: 14px;
+    }
+
+    .clanavatar {
+        width: 76px;
+        height: 76px;
+        flex-basis: 76px;
+    }
+
+    .donname {
+        font-size: 1.05rem;
+    }
+
+    .clanselect {
+        padding: 12px;
+    }
+}
+
+/* Animationen bei reduzierter Bewegung deaktivieren */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .clanavatar,
+    .clanselect {
+        transition: none;
+    }
+}

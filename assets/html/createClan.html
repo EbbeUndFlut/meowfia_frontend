@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meowfia - Clan gründen</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/createClan.css">
+    <script type="module" src="../js/createClan.js" defer></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <p>Meowfia</p>
+            <ul>
+                <li><a href="../../index.html">Members</a></li>
+                <li><a href="./region.html">Regions</a></li>
+                <li><a href="./add.html">New Member</a></li>
+                <li class="active"><a href="./createClan.html">Create Clan</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="clanpage">
+        <section class="pagehead">
+            <h1>Gründe deinen <span>Clan</span></h1>
+            <p>Ein neuer Clan beginnt mit einem Namen – und seinem Don.</p>
+        </section>
+
+        <div class="error clanmessage" role="alert" aria-live="polite"></div>
+        <div class="success clanmessage" role="status" aria-live="polite"></div>
+
+        <form class="clanform">
+            <section class="clanformcard">
+                <div class="formsectionhead">
+                    <span class="formicon" aria-hidden="true">♛</span>
+                    <div>
+                        <h2>Der Don</h2>
+                        <p>Wer führt die Familie an?</p>
+                    </div>
+                </div>
+
+                <label for="donName">Name des Dons</label>
+                <input id="donName" name="donName" type="text" maxlength="80"
+                       placeholder="z. B. Don Miau" autocomplete="off" required>
+
+                <label for="donSkills">Skills <span class="optional">optional</span></label>
+                <input id="donSkills" name="donSkills" type="text"
+                       placeholder="z. B. Einschüchtern, Schleichen, Feilschen">
+                <small class="fieldhint">Mehrere Skills mit Komma trennen.</small>
+            </section>
+
+            <section class="clanformcard">
+                <div class="formsectionhead">
+                    <span class="formicon" aria-hidden="true">⚑</span>
+                    <div>
+                        <h2>Die Familie</h2>
+                        <p>Wie soll dein Clan heißen?</p>
+                    </div>
+                </div>
+
+                <label for="clanName">Clan-Name</label>
+                <input id="clanName" name="clanName" type="text" maxlength="80"
+                       placeholder="z. B. Die Fischfänger" autocomplete="off" required>
+            </section>
+
+            <div class="formactions">
+                <a class="cancel-link" href="../../index.html">Abbrechen</a>
+                <button type="submit" class="createbutton">
+                    Clan gründen <span aria-hidden="true">→</span>
+                </button>
+            </div>
+        </form>
+    </main>
+</body>
+</html>
