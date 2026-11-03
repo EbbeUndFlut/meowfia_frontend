@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meowfia Regions</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script type="module" src="../js/region.js" defer></script>
+</head>
+
+<body class="regionpage">
+    <header>
+        <nav>
+            <p>Meowfia</p>
+            <ul>
+                <li>Members</li>
+                <li class="active">Regions</li>
+                <li><a href="./assets/html/add.html">New Member</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="regionmain">
+        <div class="error"></div>
+
+        <section class="regionhead">
+            <h1>The <span>Regions</span></h1>
+            <p>Claim territory, collect fish on every tick and show the city who runs it.</p>
+        </section>
+
+        <section class="regionstats"></section>
+
+        <div class="regionfilters">
+            <button class="regionfilter active" type="button" data-filter="all">All <span class="count"></span></button>
+            <button class="regionfilter" type="button" data-filter="claimed">Claimed <span
+                    class="count"></span></button>
+            <button class="regionfilter" type="button" data-filter="free">Free <span class="count"></span></button>
+        </div>
+
+        <div class="regions"></div>
+    </main>
+
+</body>
+
+</html>

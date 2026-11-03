@@ -1,6 +1,6 @@
 const memberSection = document.querySelector('.members')
 
-const resp = await fetch('http://localhost:8989/api/v1/members')
+const resp = await fetch('http://localhost:6767/api/v1/cat')
 const data = await resp.json()
 
 for (const member of data) {
@@ -17,10 +17,10 @@ function createMemberCard(member) {
     const cardInfo = document.createElement('div')
     cardInfo.classList.add('classinfo')
     const memberName = document.createElement('p')
-    memberName.textContent = member.name
+    memberName.textContent = member.cat_name
     const memberRank = document.createElement('div')
     memberRank.classList.add('memberrank')
-    memberRank.textContent = member.rank
+    memberRank.textContent = member.cat_rank
     const speciality = document.createElement('div')
     speciality.classList.add('speciality')
     speciality.textContent = member.speciality
