@@ -26,7 +26,7 @@ addForm.addEventListener('submit', async (event) => {
 })
 
 async function newMember(cat) {
-    const resp = await fetch('http://localhost:8989/api/v1/members', {
+    const resp = await fetch('http://127.0.0.1:8989/api/v1/members', {
         method: 'POST',
         headers: {
             'content-type': 'application/json'

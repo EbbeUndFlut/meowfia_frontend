@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:6767/api/v1/clan';
+const API_URL = 'http://127.0.0.1:6767/api/v1/clan';
 
 const clanSection = document.querySelector('.clans');
 const errorBox = document.querySelector('.clanerror');
@@ -70,6 +70,14 @@ function createClanCard(clan) {
     // Wählen-Button (aktuell ohne Funktion)
     const selectButton = element('button', 'clanselect', 'Wählen');
     selectButton.type = 'button';
+    selectButton.addEventListener('click', async (event) => {
+        const resp = await fetch(API_URL + `/set/${clan.id}`, {
+            credentials: "include"
+        })
+
+        const cookie = await cookieStore.get("clan")
+        console.log(JSON.parse(decodeURIComponent(cookie.value)))
+    })
 
     card.append(top, name, don, stats, selectButton);
 

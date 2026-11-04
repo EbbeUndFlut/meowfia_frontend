@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:6767/api/v1/clan/new'
+const API_URL = 'http://127.0.0.1:6767/api/v1/clan/new'
 
 const form = document.querySelector('.clanform')
 const errorBox = document.querySelector('.clanpage .error')

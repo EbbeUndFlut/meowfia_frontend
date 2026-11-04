@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:6767/api/v1/region'
+const API_URL = 'http://127.0.0.1:6767/api/v1/region'
 
 const regionContainer = document.querySelector('.regions')
 const statsContainer = document.querySelector('.regionstats')
@@ -87,6 +87,15 @@ function createRegionCard(region) {
     )
 
     card.append(top, name, rate, owner)
+    card.addEventListener('click', async (event) => {
+        const resp = await fetch(API_URL + `/${region.id}`, {
+            method: 'PUT',
+            credentials: 'include'
+        })
+        if (resp.ok)
+            location.reload()
+
+    })
     return card
 }
 
