@@ -1,4 +1,5 @@
 const API_URL = 'http://127.0.0.1:6767/api/v1/clan';
+const DASHBOARD_URL = './assets/html/dashboard.html';
 
 const clanSection = document.querySelector('.clans');
 const errorBox = document.querySelector('.clanerror');
@@ -67,17 +68,33 @@ function createClanCard(clan) {
         )
     );
 
-    // Wählen-Button (aktuell ohne Funktion)
+    // Wählen-Button: setzt den Clan serverseitig (Cookie "clan") und öffnet dann das Dashboard
     const selectButton = element('button', 'clanselect', 'Wählen');
     selectButton.type = 'button';
-    selectButton.addEventListener('click', async (event) => {
-        const resp = await fetch(API_URL + `/set/${clan.id}`, {
-            credentials: "include"
-        })
+    selectButton.addEventListener('click', async () => {
+        selectButton.disabled = true;
+        errorBox.classList.remove('show');
 
-        const cookie = await cookieStore.get("clan")
-        console.log(JSON.parse(decodeURIComponent(cookie.value)))
-    })
+        try {
+            const resp = await fetch(API_URL + `/set/${clan.id}`, {
+                credentials: 'include'
+            });
+
+            if (!resp.ok) {
+                throw new Error(`Server antwortet mit Status ${resp.status}`);
+            }
+
+            window.location.href = DASHBOARD_URL;
+        } catch (error) {
+            console.error('Clan konnte nicht gewählt werden:', error);
+
+            errorBox.textContent =
+                `Clan konnte nicht gewählt werden. ${error.message}`;
+            errorBox.classList.add('show');
+
+            selectButton.disabled = false;
+        }
+    });
 
     card.append(top, name, don, stats, selectButton);
 

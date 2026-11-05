@@ -43,59 +43,105 @@ function normalize(entry) {
     const clan = entry.clan && entry.clan.id !== null
         ? { id: entry.clan.id, name: entry.clan.name }
         : null
+
     return {
         id: entry.region.id,
         name: entry.region.name,
         fishRate: entry.region.fish_rate,
+        battle: Number(entry.region.battle),
         clan,
     }
 }
 
 function createRegionCard(region) {
     const claimed = region.clan !== null
+    const inBattle = region.battle === 1
 
-    const card = el('article', `regioncard ${claimed ? 'claimed' : 'free'}`)
+    const card = el(
+        'article',
+        `regioncard ${claimed ? 'claimed' : 'free'} ${inBattle ? 'battle-active' : ''}`
+    )
+
     if (claimed) card.style.setProperty('--c', clanColor(region.clan.id))
 
+    if (inBattle) {
+        card.setAttribute('aria-disabled', 'true')
+        card.title = 'A clan battle is already running in this region.'
+    }
+
     const top = el('div', 'regiontop')
+
+    const badge = el('span', 'regionbadge', claimed ? 'Claimed' : 'Free')
+
     top.append(
         el('span', 'regionid', `ID #${String(region.id).padStart(2, '0')}`),
-        el('span', 'regionbadge', claimed ? 'Claimed' : 'Free')
+        badge
     )
+
+    // Battle indicator
+    if (inBattle) {
+        const battleBadge = el('span', 'battlebadge', '⚔ CLAN BATTLE')
+        top.append(battleBadge)
+    }
 
     const name = el('h3', 'regionname', region.name)
 
     const rate = el('div', 'regionrate')
     const rateIcon = el('div', 'regionrateicon')
     rateIcon.insertAdjacentHTML('beforeend', FISH_ICON)
+
     const rateText = el('div')
     rateText.append(
         el('b', 'regionratevalue', region.fishRate),
         el('small', '', 'fish per tick')
     )
+
     rate.append(rateIcon, rateText)
 
     const owner = el('div', 'regionowner')
     const ownerText = el('div')
+
     ownerText.append(
         el('small', '', 'Owner'),
         el('span', 'regionownername', claimed ? region.clan.name : 'Unclaimed')
     )
+
     owner.append(
         el('div', 'regionavatar', claimed ? initials(region.clan.name) : '?'),
         ownerText
     )
 
     card.append(top, name, rate, owner)
-    card.addEventListener('click', async (event) => {
-        const resp = await fetch(API_URL + `/${region.id}`, {
-            method: 'PUT',
-            credentials: 'include'
-        })
-        if (resp.ok)
-            location.reload()
 
+    // Don't allow another battle to start
+    card.addEventListener('click', async () => {
+
+        if (inBattle || card.dataset.busy === 'true') {
+            return
+        }
+
+        card.dataset.busy = 'true'
+        card.classList.add('battle-starting')
+
+        try {
+            const resp = await fetch(API_URL + `/${region.id}`, {
+                method: 'PUT',
+                credentials: 'include'
+            })
+
+            if (resp.ok) {
+                location.reload()
+            } else {
+                throw new Error(`Server answered with status ${resp.status}`)
+            }
+
+        } catch (error) {
+            console.error(error)
+            card.dataset.busy = 'false'
+            card.classList.remove('battle-starting')
+        }
     })
+
     return card
 }
 

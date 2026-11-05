@@ -1,0 +1,444 @@
+/* ==========================================================
+   Clan dashboard (assets/html/dashboard.html)
+   Wird zusammen mit style.css geladen und nutzt dessen
+   Farb-Variablen, Navigation und Seitenbreite.
+   ========================================================== */
+
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+/* ---- loading / no clan selected ---- */
+.dashstatus {
+    padding: 60px 0;
+    text-align: center;
+    color: var(--muted);
+}
+
+.dashstatus strong {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1.3rem;
+    color: var(--text);
+}
+
+.dashstatus p {
+    margin-bottom: 22px;
+}
+
+/* ---- hero: the don and the clan name ---- */
+.dashhero {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    padding: 28px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    background:
+        radial-gradient(600px 260px at 95% 0%, rgba(233, 180, 76, .16), transparent 70%),
+        linear-gradient(170deg, var(--card-hi), var(--card));
+}
+
+.dashhero::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 4px;
+    background: var(--gold);
+}
+
+.dashdonpic {
+    flex: none;
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    border: 1px solid rgba(233, 180, 76, .45);
+    border-radius: 20px;
+    background: var(--bg);
+    box-shadow: 0 0 40px rgba(233, 180, 76, .18);
+}
+
+.dashdonpic .dashavatar {
+    width: 100%;
+    height: 100%;
+}
+
+.dashheroinfo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    min-width: 0;
+}
+
+.dashtags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.dashlabel,
+.dashid {
+    padding: 4px 11px;
+    border-radius: 999px;
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+}
+
+.dashlabel {
+    border: 1px solid rgba(233, 180, 76, .35);
+    background: var(--gold-soft);
+    color: var(--gold);
+}
+
+.dashid {
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--muted);
+}
+
+.dashtitle {
+    font-size: 2.6rem;
+    line-height: 1.1;
+    letter-spacing: -.5px;
+    overflow-wrap: anywhere;
+}
+
+.dashdon {
+    color: var(--muted);
+}
+
+.dashdon strong {
+    color: var(--text);
+}
+
+.dashswitch {
+    display: inline-block;
+    flex: none;
+    margin-left: auto;
+    padding: 10px 18px;
+    border: 1px solid var(--gold);
+    border-radius: 10px;
+    color: var(--gold);
+    font-weight: 700;
+    text-decoration: none;
+    transition: background .15s ease, color .15s ease;
+}
+
+.dashswitch:hover {
+    background: var(--gold);
+    color: #17130a;
+}
+
+.dashswitch:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+}
+
+/* ---- key numbers ---- */
+.dashstats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.dashstat {
+    padding: 20px 22px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: linear-gradient(160deg, var(--card-hi), var(--card));
+}
+
+.dashstat small {
+    display: block;
+    font-size: .75rem;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.dashstat strong {
+    display: block;
+    margin-top: 8px;
+    font-size: 2rem;
+    overflow-wrap: anywhere;
+}
+
+.dashstat.gold strong {
+    color: var(--gold);
+}
+
+.dashhint {
+    display: block;
+    margin-top: 4px;
+    font-size: .75rem;
+    color: var(--muted);
+}
+
+/* ---- panels: members and regions ---- */
+.dashgrid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: 22px;
+    align-items: start;
+}
+
+.dashgrid.single {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.dashpanel {
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: linear-gradient(170deg, var(--card-hi), var(--card));
+}
+
+.dashpanelhead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--line);
+}
+
+.dashpanelhead h2 {
+    font-size: 1.15rem;
+}
+
+.dashcount {
+    padding: 3px 11px;
+    border-radius: 999px;
+    background: var(--gold-soft);
+    color: var(--gold);
+    font-size: .75rem;
+    font-weight: 700;
+}
+
+/* long lists scroll inside their panel so both panels stay in view */
+.dashlist {
+    max-height: 640px;
+    padding: 16px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--line) transparent;
+}
+
+.dashempty {
+    padding: 28px 0;
+    text-align: center;
+    color: var(--muted);
+}
+
+/* ---- members ---- */
+.dashmembers {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(230px, 100%), 1fr));
+    gap: 12px;
+}
+
+.dashmember {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--bg);
+}
+
+.dashmember.don {
+    border-color: rgba(233, 180, 76, .55);
+    background: linear-gradient(135deg, var(--gold-soft), var(--bg) 70%);
+}
+
+.dashavatar {
+    display: block;
+    object-fit: cover;
+    background: var(--bg);
+}
+
+.dashmember .dashavatar {
+    flex: none;
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+}
+
+/* shown instead of the picture when the image is missing or fails to load */
+.dashavatar.fallback {
+    display: grid;
+    place-items: center;
+    background: radial-gradient(circle at 30% 20%, rgba(233, 180, 76, .22), transparent 60%), var(--bg2);
+    color: var(--gold);
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.dashdonpic .dashavatar.fallback {
+    font-size: 3rem;
+}
+
+.dashmemberinfo {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.dashmembername {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2px 8px;
+    min-width: 0;
+}
+
+.dashmembername strong {
+    overflow: hidden;
+    font-size: 1rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dashdonbadge {
+    flex: none;
+    padding: 1px 7px;
+    border: 1px solid rgba(233, 180, 76, .45);
+    border-radius: 999px;
+    background: var(--gold-soft);
+    color: var(--gold);
+    font-size: .6rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.dashskill,
+.dashsalary {
+    overflow: hidden;
+    font-size: .8rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dashskill {
+    color: var(--muted);
+}
+
+.dashsalary {
+    color: var(--gold);
+}
+
+/* ---- regions ---- */
+.dashregions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.dashregion {
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--bg);
+}
+
+.dashregiontop {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.dashregionname {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+    min-width: 0;
+}
+
+.dashregionname strong {
+    font-size: 1rem;
+    overflow-wrap: anywhere;
+}
+
+.dashregionid {
+    font-size: .7rem;
+    color: var(--muted);
+}
+
+.dashregionrate {
+    flex: none;
+    color: var(--gold);
+    font-size: .9rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.dashbar {
+    height: 6px;
+    margin-top: 10px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--line);
+}
+
+.dashbar span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--gold), #f3d38a);
+}
+
+/* ---- small screens ---- */
+@media (max-width: 1100px) {
+    .dashgrid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 1000px) {
+    .dashstats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 700px) {
+    .dashhero {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 22px;
+    }
+
+    .dashdonpic {
+        width: 110px;
+        height: 110px;
+    }
+
+    .dashtitle {
+        font-size: 2rem;
+    }
+
+    .dashswitch {
+        margin-left: 0;
+    }
+
+    .dashlist {
+        max-height: 520px;
+    }
+}
+
+@media (max-width: 420px) {
+    .dashstats {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

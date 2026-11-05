@@ -153,7 +153,7 @@ main {
     padding: 40px 32px 56px;
 }
 
-.regionpage .error {
+.error {
     height: auto;
     margin-bottom: 24px;
     padding: 16px 20px;
@@ -448,8 +448,13 @@ main {
         padding: 14px 16px;
     }
 
+    nav>ul {
+        flex-wrap: wrap;
+    }
+
     nav li {
         padding: 8px 12px;
+        white-space: nowrap;
     }
 
     main {
@@ -575,5 +580,357 @@ main {
     .cardcontainer:hover,
     .cardcontainer:hover .cardimage {
         transform: none;
+    }
+}
+
+
+/* ==========================================================
+   Clans page (index.html)
+   Cards built by main.js: .clancard with the don's picture
+   (.clanpic > .clanavatar + .clandon) and the clan details
+   (.clanname + .clanstats > .clanstat)
+   ========================================================== */
+
+.clans {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+    gap: 22px;
+}
+
+.clancard {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: linear-gradient(170deg, var(--card-hi), var(--card));
+    transition: transform .15s ease, border-color .15s ease;
+}
+
+.clancard::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    z-index: 3;
+    height: 4px;
+    background: var(--gold);
+}
+
+.clancard:hover {
+    transform: translateY(-3px);
+    border-color: var(--gold);
+}
+
+/* ---- the don's picture ---- */
+.clanpic {
+    position: relative;
+    height: 210px;
+    overflow: hidden;
+    background: var(--bg);
+}
+
+/* fade the picture into the card so the don's name stays readable */
+.clanpic::after {
+    content: "";
+    position: absolute;
+    inset: 40% 0 0 0;
+    z-index: 1;
+    background: linear-gradient(to bottom, transparent, rgba(13, 15, 20, .92));
+    pointer-events: none;
+}
+
+.clanavatar {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .8s cubic-bezier(.2, .6, .2, 1);
+}
+
+/* slow zoom into the don while the card is hovered */
+.clancard:hover .clanavatar {
+    transform: scale(1.12);
+}
+
+/* shown instead of the picture when the image is missing or fails to load */
+.clanavatar.fallback {
+    display: grid;
+    place-items: center;
+    background: radial-gradient(circle at 30% 20%, rgba(233, 180, 76, .22), transparent 60%), var(--bg2);
+    color: var(--gold);
+    font-size: 3.5rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.clandon {
+    position: absolute;
+    right: 20px;
+    bottom: 16px;
+    left: 20px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+.clandonlabel {
+    padding: 3px 10px;
+    border: 1px solid rgba(233, 180, 76, .35);
+    border-radius: 999px;
+    background: rgba(13, 15, 20, .55);
+    color: var(--gold);
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+}
+
+.clandonname {
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+/* ---- clan details ---- */
+.clanbody {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 18px;
+    padding: 20px 22px 22px;
+}
+
+.clanname {
+    font-size: 1.4rem;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.clanstats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: auto;
+}
+
+.clanstat {
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--bg);
+}
+
+.clanstat small {
+    display: block;
+    font-size: .65rem;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.clanstat strong {
+    display: block;
+    margin-top: 6px;
+    font-size: 1.15rem;
+    overflow-wrap: anywhere;
+}
+
+.clanstat.gold strong {
+    color: var(--gold);
+}
+
+.clanstatus,
+.memberstatus {
+    grid-column: 1 / -1;
+    padding: 40px 0;
+    text-align: center;
+    color: var(--muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .clancard,
+    .clanavatar {
+        transition: none;
+    }
+
+    .clancard:hover,
+    .clancard:hover .clanavatar {
+        transform: none;
+    }
+}
+
+
+/* ==========================================================
+   Streuner page (assets/html/streuner.html)
+   Uses the cat card from above (.cardcontainer with .cardimage
+   and .classinfo) plus the settings button and image fallback
+   ========================================================== */
+
+/* shown instead of the picture when the image is missing or fails to load */
+.cardimage.fallback {
+    display: grid;
+    place-items: center;
+    background: radial-gradient(circle at 30% 20%, rgba(233, 180, 76, .22), transparent 60%), var(--bg2);
+    color: var(--gold);
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.cardbutton {
+    align-self: flex-start;
+    margin-top: 4px;
+    padding: 8px 16px;
+    border: 1px solid var(--gold);
+    border-radius: 10px;
+    background: transparent;
+    color: var(--gold);
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+}
+
+.cardbutton:hover {
+    background: var(--gold);
+    color: #17130a;
+}
+
+.cardbutton:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+}
+
+/* ==========================================================
+   Clan Battle - Region Animation
+   ========================================================== */
+
+.regioncard.battle-active {
+    --battle-color: #ff4545;
+
+    border: 1px solid var(--battle-color);
+
+    background:
+        linear-gradient(170deg,
+            rgba(120, 25, 25, .35),
+            var(--card));
+
+    animation: battlePulse 2s ease-in-out infinite;
+}
+
+/* Red glowing border */
+
+.regioncard.battle-active::before {
+    background: linear-gradient(90deg,
+            #ff3030,
+            #ff9b42,
+            #ff3030);
+
+    background-size: 200% 100%;
+
+    animation: battleGradient 2s linear infinite;
+}
+
+/* Battle badge */
+
+.battlebadge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 6px 12px;
+
+    border: 1px solid rgba(255, 69, 69, .5);
+    border-radius: 999px;
+
+    background: rgba(255, 40, 40, .15);
+
+    color: #ff6969;
+
+    font-size: .7rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    white-space: nowrap;
+
+    animation: battleBadgePulse 1.5s ease-in-out infinite;
+}
+
+/* Red glowing region name */
+
+.regioncard.battle-active .regionname {
+    color: #ff7777;
+}
+
+/* Disable clicking */
+
+.regioncard.battle-active {
+    cursor: not-allowed;
+}
+
+.regioncard.battle-active:hover {
+    transform: none;
+    border-color: #ff4545;
+}
+
+/* Loading state when starting a battle */
+
+.regioncard.battle-starting {
+    opacity: .65;
+    pointer-events: none;
+    cursor: wait;
+}
+
+/* Animations */
+
+@keyframes battlePulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 5px rgba(255, 50, 50, .15);
+    }
+
+    50% {
+        box-shadow:
+            0 0 15px rgba(255, 50, 50, .35),
+            0 0 30px rgba(255, 50, 50, .12);
+    }
+}
+
+@keyframes battleGradient {
+    from {
+        background-position: 0% 50%;
+    }
+
+    to {
+        background-position: 200% 50%;
+    }
+}
+
+@keyframes battleBadgePulse {
+
+    0%,
+    100% {
+        background: rgba(255, 40, 40, .12);
+        box-shadow: 0 0 0 rgba(255, 50, 50, 0);
+    }
+
+    50% {
+        background: rgba(255, 40, 40, .3);
+        box-shadow: 0 0 12px rgba(255, 50, 50, .3);
+    }
+}
+
+/* Accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .regioncard.battle-active,
+    .regioncard.battle-active::before,
+    .battlebadge {
+        animation: none;
     }
 }
